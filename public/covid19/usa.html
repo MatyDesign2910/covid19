@@ -17,7 +17,7 @@
       referrerpolicy="no-referrer"
     ></script>
 
-    <title>Covid 19 - Hito 1</title>
+    <title>Covid 19 - Hito 2</title>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -55,6 +55,9 @@
             <li class="nav-item">
               <a class="nav-link" href="usa.html">USA</a>
             </li>
+            <li class="nav-item" id="salir" style="display: none">
+              <a class="nav-link">Salir</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -63,39 +66,61 @@
       <section>
         <div class="container">
           <div class="row w-100">
-            <div class="col-12 py-4">
-              <h2>Situación Mundial</h2>
-              <h4>Gráfica mundial de casos de Covid-19</h4>
-              <canvas id="myChart" width="300%" height="130"></canvas>
+            <div class="col-12 py-4" id="form" style="display: block">
+              <form
+                class="align-items-center"
+                style="width: 400px; max-width: 100%; margin: auto"
+                id="formulario"
+              >
+                <div class="col-12">
+                  <label for="exampleFormControlInput1" class="col-form-label"
+                    >Correo</label
+                  >
+                  <div class="col-sm-12">
+                    <input
+                      type="email"
+                      class="form-control"
+                      id="email"
+                      placeholder="Ingresa correo"
+                    />
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <label for="inputPassword" class="col-form-label"
+                    >Password</label
+                  >
+                  <div class="col-sm-12">
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="inputPassword"
+                      placeholder="Ingresa password"
+                    />
+                  </div>
+                </div>
+
+                <div class="col-12 mt-4">
+                  <button type="submit" class="btn btn-primary w-100">
+                    Ingresar
+                  </button>
+                </div>
+              </form>
             </div>
-            <div class="col-12 py-4">
-              <h4>Listado de casos de Covid-19</h4>
-              <div id="tablaCovid" class="mt-4">
-                <table class="table table-responsive">
-                  <thead class="table-dark">
-                    <tr>
-                      <th>Nombre del país</th>
-                      <th class="text-center">Casos confirmados</th>
-                      <th class="text-center">Fallecidos</th>
-                      <th class="text-center">Recuperados</th>
-                      <th class="text-center">Casos activos</th>
-                      <th class="text-center">Acciones</th>
-                    </tr>
-                  </thead>
-                  <tbody id="printDataTable"></tbody>
-                </table>
-                <div class="pagination-container"></div>
-              </div>
+            <div class="col-12 py-4" id="chart" style="display: none">
+              <h2>Situación USA</h2>
+              <h4>Gráfica de casos de Covid-19 en USA</h4>
+              <canvas id="myChart" width="300%" height="120"></canvas>
             </div>
           </div>
         </div>
       </section>
-      <!-- <section class="py-5">
-            <div class="container">
-                <h2>Situación USA</h2>
-            </div>
-        </section> -->
     </main>
+    <div id="loader-out" style="display: none;">
+      <div id="loader-container">
+        <p id="loading-text">Cargando</p>
+      </div>
+    </div>
     <div class="modal" id="modalCountries" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -117,13 +142,17 @@
         </div>
       </div>
     </div>
-    <script src="https://pagination.js.org/dist/2.1.5/pagination.min.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
       crossorigin="anonymous"
     ></script>
-    <script type="module" src="assets/scripts.js"></script>
+    <script type="module" src="assets/usa.js"></script>
     <style>
       h1,
       h2,
@@ -200,6 +229,68 @@
       div#tablaCovid {
         height: 82vh;
         overflow: auto;
+      }
+      #loader-out {
+        background-color: #0d6efd;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+
+      #loader-container {
+        width: 150px;
+        height: 150px;
+        color: white;
+        margin: 0 auto;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%);
+        border: 5px solid #fff;
+        border-radius: 50%;
+        -webkit-animation: borderScale 1s infinite ease-in-out;
+        animation: borderScale 1s infinite ease-in-out;
+      }
+
+      #loading-text {
+        justify-content: center;
+        align-items: center;
+        font-family: "Red Hat Text", sans-serif;
+        font-weight: normal;
+        font-size: 16px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%);
+        color: #fff;
+      }
+      @-webkit-keyframes borderScale {
+        0% {
+          border: 5px solid white;
+        }
+        50% {
+          border: 25px solid #184aa8;
+        }
+        100% {
+          border: 5px solid white;
+        }
+      }
+
+      @keyframes borderScale {
+        0% {
+          border: 5px solid white;
+        }
+        50% {
+          border: 25px solid #184aa8;
+        }
+        100% {
+          border: 5px solid white;
+        }
       }
     </style>
   </body>
